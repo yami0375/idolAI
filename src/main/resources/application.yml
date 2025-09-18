@@ -1,0 +1,52 @@
+server:
+  port: 8081
+
+
+langchain4j:
+  open-ai:
+    chat-model:
+      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      api-key: sk-5ade03d9e59c40bfa83c288f33662a16
+      model-name: qwen-plus
+      log-requests: true
+      log-responses: true
+
+    streaming-chat-model:
+      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      api-key: sk-5ade03d9e59c40bfa83c288f33662a16
+      model-name: qwen-plus
+      log-requests: true
+      log-responses: true
+
+    embedding-model:
+      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      api-key: sk-5ade03d9e59c40bfa83c288f33662a16
+      model-name: text-embedding-v3
+      log-requests: true
+      log-responses: true
+      max-segments-per-batch: 10
+  community:
+    redis:
+      host: 192.168.10.99
+      port: 6380
+
+logging:
+  level:
+    dev.langchain4j: debug
+
+
+spring:
+  data:
+    redis:
+      host: 192.168.10.99
+      port: 6380
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://192.168.10.99:3307/moris_db?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: 1234
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/*.xml
