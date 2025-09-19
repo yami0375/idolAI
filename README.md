@@ -23,7 +23,7 @@
 
 ### 1. 知识库爬取与处理
 
-#### 运行周杰伦知识库爬取脚本
+#### 运行知识库爬取脚本
 ```bash
 cd crawl4ai-deployment
 python jaychou_crawl_knowledge_base.py
