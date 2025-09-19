@@ -1,6 +1,8 @@
-# Moris Customer Service
+# IdolAI
 
-智能客服系统，基于Spring Boot后端和Vue.js前端，集成AI对话能力和知识库检索功能。
+分身AI机器人，基于Spring Boot后端和Vue.js前端，集成AI对话能力和知识库检索功能。
+
+
 
 ## 项目介绍
 
@@ -23,7 +25,7 @@
 
 ### 1. 知识库爬取与处理
 
-#### 运行周杰伦知识库爬取脚本
+#### 运行知识库爬取脚本
 ```bash
 cd crawl4ai-deployment
 python jaychou_crawl_knowledge_base.py
@@ -77,6 +79,9 @@ npm run build
 
 前端服务默认运行在 `http://localhost:3000`
 
+
+
+
 ## 项目结构
 
 ```
@@ -128,14 +133,14 @@ langchain4j:
     chat-model:
       api-key: ${DASHSCOPE_API_KEY}
       model-name: qwen-plus
-      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      base-url: {your_model}
       temperature: 0.7
       max-tokens: 2000
       timeout: 60s
     streaming-chat-model:
-      api-key: ${DASHSCOPE_API_KEY}
+      api-key: ${YOUR_API_KEY}
       model-name: qwen-plus
-      base-url: https://dashscope.aliyuncs.com/compatible-mode/v1
+      base-url: {your_model}
       temperature: 0.7
       max-tokens: 2000
       timeout: 60s
