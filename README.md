@@ -1,6 +1,6 @@
-# Moris Customer Service
+# IdolAI
 
-智能客服系统，基于Spring Boot后端和Vue.js前端，集成AI对话能力和知识库检索功能。
+明星分身AI机器人，基于Spring Boot后端和Vue.js前端，集成AI对话能力和知识库检索功能。
 
 ## 项目介绍
 
