@@ -1,5 +1,6 @@
 package com.yami.moriscustomerservice.service;
 
+
 import dev.langchain4j.service.MemoryId;
 import dev.langchain4j.service.SystemMessage;
 import dev.langchain4j.service.UserMessage;
@@ -11,15 +12,14 @@ import reactor.core.publisher.Flux;
         wiringMode = AiServiceWiringMode.EXPLICIT,
         chatModel = "openAiChatModel",
         streamingChatModel = "openAiStreamingChatModel",
-        chatMemoryProvider = "chatMemoryProvider",
-        contentRetriever = "contentRetriever",
-        tools = "playerOrderTool"
+//        chatMemory = "chatMemory"//配置会话记忆
+        chatMemoryProvider = "chatMemoryProvider",//配置会话记忆提供者对象
+        contentRetriever = "contentRetriever"
+//        tools = "playerOrderTool"
+
 )
 public interface ConsultantService {
 
-    @SystemMessage(fromResource = "system.md")
+    @SystemMessage(fromResource = "system.txt")
     Flux<String> chat(@MemoryId String memoryId, @UserMessage String message);
-    
-    @SystemMessage(fromResource = "system.md")
-    Flux<String> streamChat(@UserMessage String message);
 }

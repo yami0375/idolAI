@@ -1,0 +1,24 @@
+{
+  "name": "jaychou-chat-agent",
+  "version": "1.0.0",
+  "description": "A chat agent simulating Jay Chou's conversation style",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@microsoft/fetch-event-source": "^2.0.1",
+    "axios": "^1.6.0",
+    "date-fns": "^4.1.0",
+    "pinia": "^2.1.7",
+    "vant": "^4.8.0",
+    "vue": "^3.4.0",
+    "vue-router": "^4.2.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.5.0",
+    "sass": "^1.69.5",
+    "vite": "^5.0.0"
+  }
+}

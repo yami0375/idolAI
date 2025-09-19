@@ -59,22 +59,17 @@ public class CommonConfig {
     }
 
 
-    //如果向量数据库已经存储到了数据就可以把@bean去掉了免得每次启动都加载一遍
 //    @Bean
-    //其实这个langchain4j-easy-rag里面就已经提供了embeddingStore并注入了依赖所以我们得改名字改成store
-    public EmbeddingStore store(){
-        //1.加载文糟进内存
+    //构建向量数据库操作对象，加载邓超知识库内容
+    public EmbeddingStore embeddingStore(){
+        //1.加载文档进内存
         List<Document> documents = ClassPathDocumentLoader.loadDocuments("content");
-//        //2.构建向最数据库操作对象  操作的是内存版本的向量数据库
-//        InMemoryEmbeddingStore store = new InMemoryEmbeddingStore();
-
-
+        
         //自定义文档分割器对象
         //构建文档分割器对象
         DocumentSplitter ds = DocumentSplitters.recursive(500,100);
 
-
-        //3.构建一个EmbeddingstoreIngestor对象,完成文本数据切测,向最化，存储
+        //3.构建一个EmbeddingstoreIngestor对象,完成文本数据切分,向量化，存储
         EmbeddingStoreIngestor ingestor = EmbeddingStoreIngestor.builder()
                 .embeddingStore(redisEmbeddingStore)
                 .documentSplitter(ds)
