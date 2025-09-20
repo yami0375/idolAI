@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { generateUUID, formatSessionTitle } from '@/utils/utils'
 import { ref, computed } from 'vue'
-import { fetchEventSource } from '@microsoft/fetch-event-source';
 
 // 后端API地址
 const apiUrl = 'http://localhost:8081'
@@ -83,32 +82,98 @@ export const useChatStore = defineStore('chat', () => {
       currentSession.value.messages.push(aiMessage)
       saveToLocalStorage()
   
-      // 使用普通fetch API处理text/html响应
+      // 使用流式响应处理打字机效果
       const params = new URLSearchParams({
         message: content,
         memoryId: currentSession.value.memoryId
       });
       
+      // 设置超时机制
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 30000); // 30秒超时
+      
       const response = await fetch(`${apiUrl}/chat?${params.toString()}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-        }
+        },
+        signal: controller.signal
       });
+      
+      clearTimeout(timeout);
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       
-      // 读取响应内容
-      const responseText = await response.text();
-      if (responseText && responseText.trim()) {
-        // 直接设置AI消息内容
-        aiMessage.content = responseText;
-        // 实时更新UI
-        saveToLocalStorage();
-        // 触发滚动到底部事件
-        window.dispatchEvent(new CustomEvent('scrollToBottom'));
+      // 使用ReadableStream处理SSE流式响应（处理JSON格式）
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder('utf-8');
+      let buffer = '';
+      let currentContent = '';
+      
+      // 打字机效果函数（节流更新）
+      const typeWriter = async (text) => {
+        let charBuffer = '';
+        for (let i = 0; i < text.length; i++) {
+          charBuffer += text[i];
+          
+          // 每5个字符或最后一个字符时更新UI和存储
+          if (i % 5 === 0 || i === text.length - 1) {
+            // 重新获取当前aiMessage引用，避免会话切换问题
+            const currentAiMessage = currentSession.value.messages.find(
+              msg => msg.id === aiMessage.id
+            );
+            if (currentAiMessage) {
+              currentContent += charBuffer;
+              currentAiMessage.content = currentContent;
+              charBuffer = '';
+              
+              // 节流更新：只在必要时保存到本地存储
+              saveToLocalStorage();
+              window.dispatchEvent(new CustomEvent('scrollToBottom'));
+            }
+          }
+          
+          // 添加延迟以增强打字机效果
+          await new Promise(resolve => setTimeout(resolve, 30));
+        }
+      };
+      
+      try {
+        try {
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            
+            const chunk = decoder.decode(value, { stream: true });
+            buffer += chunk;
+            
+            // 处理SSE格式：按行分割并提取数据
+            const lines = buffer.split('\n');
+            buffer = lines.pop() || ''; // 保留未处理完的部分
+            
+            for (const line of lines) {
+              if (line.startsWith('data:') && line.length > 5) {
+                try {
+                  // 优先尝试解析JSON格式
+                  const jsonData = JSON.parse(line.substring(5).trim());
+                  const content = jsonData.choices?.[0]?.delta?.content || '';
+                  if (content) await typeWriter(content);
+                } catch {
+                  // 如果不是JSON格式，处理为纯文本
+                  const text = line.substring(5).trim();
+                  if (text) await typeWriter(text);
+                }
+              }
+            }
+          }
+        } catch (err) {
+          console.error('Stream read error:', err);
+          throw err;
+        }
+      } finally {
+        reader.releaseLock();
       }
       
       currentSession.value.lastMessageTime = Date.now();

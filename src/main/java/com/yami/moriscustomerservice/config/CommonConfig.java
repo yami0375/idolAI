@@ -59,8 +59,8 @@ public class CommonConfig {
     }
 
 
-//    @Bean
-    //构建向量数据库操作对象，加载邓超知识库内容
+   @Bean
+    //构建向量数据库操作对象，加载邓超知识库内容,一次加载过后即可将Bean注解去掉
     public EmbeddingStore embeddingStore(){
         //1.加载文档进内存
         List<Document> documents = ClassPathDocumentLoader.loadDocuments("content");
