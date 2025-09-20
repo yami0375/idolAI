@@ -5,7 +5,6 @@
 ![1](images\1.png)
 
 ## 项目介绍
-
 本项目是一个现代化的智能客服系统，具有以下特性：
 
 - **后端技术**: Spring Boot + WebFlux + Redis + LangChain4j
