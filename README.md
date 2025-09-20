@@ -2,11 +2,10 @@
 
 分身AI机器人，基于Spring Boot后端和Vue.js前端，集成AI对话能力和知识库检索功能。
 
-![1](images\1.png)
+![1](./images/1.png)
 
 ## 项目介绍
 本项目是一个现代化的智能客服系统，具有以下特性：
-
 - **后端技术**: Spring Boot + WebFlux + Redis + LangChain4j
 - **前端技术**: Vue 3 + Vite + Pinia
 - **AI能力**: 集成阿里云大模型API
