@@ -90,8 +90,8 @@
             >
               <div class="message-content">
                 <div class="message-avatar">
-                  <van-icon v-if="message.role === 'user'" name="user" size="32" color="#4A90E2" />
-                  <van-icon v-else name="robot" size="32" color="#10a37f" />
+                  <img v-if="message.role === 'user'" src="@/assets/avatar19.png" alt="用户头像" class="avatar-image" />
+                  <img v-else src="@/assets/Jay-avatar.png" alt="周杰伦头像" class="avatar-image" />
                 </div>
                 <div class="message-bubble">
                   <div class="message-text" v-html="formatMessage(message.content)"></div>
@@ -651,6 +651,13 @@ export default {
   justify-content: center;
   flex-shrink: 0;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.avatar-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .message-bubble {

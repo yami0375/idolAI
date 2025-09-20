@@ -281,7 +281,7 @@ def process_files():
     # 保存到文件
     save_content(jaychou_info, 'jaychou_knowledge_base.md')
     
-    print("周杰伦知识库文档生成完成!")
+    print("知识库文档生成完成!")
 
 if __name__ == "__main__":
     process_files()
